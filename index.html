@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff0f5">
+  <title>GlowUp - By Anashia Mushtaq</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: linear-gradient(180deg, #fff0f5, #ffe4ec); color: #333; min-height: 100vh; padding: 16px 16px 40px; }
+    .top { text-align: center; padding: 18px 0 10px; }
+    .top h1 { font-size: 34px; color: #d6336c; letter-spacing: 1px; }
+    .top p { font-size: 13px; color: #888; margin-top: 4px; }
+    .top .name { background: #fff; padding: 6px 14px; border-radius: 20px; display: inline-block; margin-top: 10px; font-size: 13px; font-weight: bold; color: #d6336c; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card { background: #fff; border-radius: 20px; padding: 18px; margin: 14px auto; max-width: 520px; box-shadow: 0 4px 15px rgba(0,0,0,.06); }
+    .card h2 { font-size: 17px; margin-bottom: 12px; }
+    .quote { background: linear-gradient(135deg, #ff9a9e, #fbc2eb); color: #fff; text-align: center; }
+    .quote p { font-size: 16px; line-height: 1.5; font-style: italic; }
+    .quote button { margin-top: 12px; padding: 8px 16px; border: 0; border-radius: 20px; background: #fff; color: #d6336c; font-weight: bold; cursor: pointer; }
+    .moods { display: flex; justify-content: space-between; gap: 8px; }
+    .mood { flex: 1; text-align: center; padding: 12px 4px; border-radius: 14px; background: #fff5f7; cursor: pointer; border: 2px solid transparent; }
+    .mood.active { border-color: #d6336c; background: #ffe0e6; }
+    .mood span { font-size: 28px; display: block; }
+    .mood small { font-size: 11px; }
+    .water { display: flex; align-items: center; gap: 12px; }
+    .water button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: #ff9a9e; color: #fff; font-size: 22px; cursor: pointer; }
+    .water b { font-size: 28px; }
+    .progress { height: 10px; background: #ffe0e6; border-radius: 10px; margin-top: 10px; overflow: hidden; }
+    .progress div { height: 100%; background: #d6336c; width: 0%; transition: width .3s; }
+    .habit { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid #f5f5f5; }
+    .habit:last-child { border: 0; }
+    .habit input { width: 20px; height: 20px; accent-color: #d6336c; }
+    .habit.done span { text-decoration: line-through; opacity: .5; }
+    .todo { display: flex; gap: 8px; margin-bottom: 12px; }
+    .todo input { flex: 1; min-width: 0; padding: 12px; border-radius: 12px; border: 1px solid #eee; outline-color: #d6336c; }
+    .todo button { padding: 12px 16px; border: 0; border-radius: 12px; background: #d6336c; color: #fff; font-weight: bold; cursor: pointer; }
+    .todo-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px; background: #fff5f7; border-radius: 12px; margin-bottom: 8px; overflow-wrap: anywhere; }
+    .todo-item button { flex: 0 0 auto; background: none; border: 0; font-size: 16px; cursor: pointer; }
+    .score { text-align: center; }
+    .score h3 { font-size: 42px; color: #d6336c; }
+    .score p { font-size: 13px; color: #888; }
+    @media (max-width: 380px) { .moods { gap: 4px; } .mood { padding: 10px 2px; } .mood span { font-size: 24px; } }
+  </style>
+</head>
+<body>
+  <header class="top">
+    <h1>GlowUp ✨</h1>
+    <p>My Daily Diary • Self Care • Study • Mood</p>
+    <div class="name">🌸 By Anashia Mushtaq 🌸</div>
+  </header>
+
+  <main>
+    <section class="card quote" aria-label="Daily motivation">
+      <p id="quoteText">"Khud se pyar karna sabse bara glow up hai."</p>
+      <button type="button" id="newQuote">New Quote ✨</button>
+    </section>
+
+    <section class="card">
+      <h2>😊 Aaj Mood Kaisa Hai, Anashia?</h2>
+      <div class="moods" id="moods">
+        <button class="mood" type="button" data-mood="Happy" aria-label="Happy"><span>😍</span><small>Happy</small></button>
+        <button class="mood" type="button" data-mood="Good" aria-label="Good"><span>😊</span><small>Good</small></button>
+        <button class="mood" type="button" data-mood="Okay" aria-label="Okay"><span>😐</span><small>Okay</small></button>
+        <button class="mood" type="button" data-mood="Tired" aria-label="Tired"><span>🥱</span><small>Tired</small></button>
+        <button class="mood" type="button" data-mood="Sad" aria-label="Sad"><span>😔</span><small>Sad</small></button>
+      </div>
+      <p id="moodMsg" style="text-align:center;margin-top:10px;font-size:14px;color:#d6336c" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>💧 Water Tracker</h2>
+      <div class="water">
+        <button type="button" id="waterMinus" aria-label="Remove one glass">−</button>
+        <div><b><span id="glass">0</span> / 8</b><div style="font-size:12px;color:#888">Glasses Today</div></div>
+        <button type="button" id="waterPlus" aria-label="Add one glass">+</button>
+      </div>
+      <div class="progress" role="progressbar" aria-label="Water goal" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0"><div id="waterBar"></div></div>
+      <p id="waterMsg" style="font-size:12px;margin-top:8px;color:#888">Pani piyo Anashia, skin glow karegi!</p>
+    </section>
+
+    <section class="card">
+      <h2>✅ Anashia Ki Aaj Ki Habits</h2>
+      <div id="habits"></div>
+      <p id="habitScore" style="text-align:center;margin-top:10px;font-weight:bold;color:#d6336c" aria-live="polite"></p>
+    </section>
+
+    <section class="card">
+      <h2>📝 Anashia Ka To-Do List</h2>
+      <form class="todo" id="todoForm">
+        <input id="todoInput" placeholder="e.g. Assignment complete karni hai..." aria-label="New task" autocomplete="off">
+        <button type="submit">Add</button>
+      </form>
+      <div id="todoList"></div>
+    </section>
+
+    <section class="card score">
+      <h2>🌟 Anashia Ka Glow Score</h2>
+      <h3 id="glowScore">0%</h3>
+      <p>Tum jitni habits poori karogi, score utna barhega!</p>
+    </section>
+  </main>
+
+  <p style="text-align:center;font-size:12px;color:#aaa;margin-top:10px">Made with 💖 by Anashia Mushtaq</p>
+
+  <script>
+    const quotes = [
+      'Khud se pyar karna sabse bara glow up hai.',
+      'Tumhari mehnat ek din zaroor rang layegi, Anashia!',
+      'Choti choti habits bara change lati hain.',
+      'Aaj ka ek page, kal ki kamyabi hai.',
+      'Glow alag hota hai jab dil khush hota hai.',
+      'Apne dreams ke liye roz thora thora karo, Anashia.',
+      'Tu kar sakti hai Anashia, bas haar mat maan!',
+      'Self care selfish nahi, zaroori hai.'
+    ];
+    const moodMessages = {
+      Happy: 'MashAllah Anashia! Ye mood barkarar rakho 😍',
+      Good: 'Acha hai Anashia, aaj din acha jayega!',
+      Okay: 'Koi baat nahi Anashia, thora rest kar lo 💖',
+      Tired: 'Pani piyo Anashia aur 10 min rest karo!',
+      Sad: 'Allah sab behtar karega Anashia, tum strong ho 💪'
+    };
+    const habitList = ['Fajr Namaz 🕌', 'Study 2 Hours 📚', 'Skincare Routine 🧴', '8 Glass Pani 💧', 'Quran 1 Page 📖', 'Walk 15 Min 🚶‍♀️'];
+    let water = 0;
+
+    document.getElementById('newQuote').addEventListener('click', () => {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('quoteText').textContent = `"${quote}"`;
+    });
+
+    document.querySelectorAll('.mood').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.mood').forEach(mood => mood.classList.remove('active'));
+        button.classList.add('active');
+        document.getElementById('moodMsg').textContent = moodMessages[button.dataset.mood];
+      });
+    });
+
+    const habitsEl = document.getElementById('habits');
+    habitList.forEach((habit, index) => {
+      const label = document.createElement('label');
+      label.className = 'habit';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.dataset.index = index;
+      const text = document.createElement('span');
+      text.textContent = habit;
+      checkbox.addEventListener('change', () => {
+        label.classList.toggle('done', checkbox.checked);
+        updateScore();
+      });
+      label.append(checkbox, text);
+      habitsEl.appendChild(label);
+    });
+
+    function updateScore() {
+      const checkboxes = [...document.querySelectorAll('.habit input')];
+      const checked = checkboxes.filter(box => box.checked).length;
+      const habitPercent = Math.round((checked / checkboxes.length) * 100);
+      const glow = Math.round(habitPercent * 0.6 + (water / 8) * 40);
+      document.getElementById('glowScore').textContent = `${glow}%`;
+      document.getElementById('habitScore').textContent = checked === checkboxes.length
+        ? 'Amazing! Sab habits complete ho gayi! ✨'
+        : checked > 0
+          ? `${checked} habit complete hui, keep going! 💪`
+          : 'Aaj ki habits complete karo, glow score barhega! 🌸';
+    }
+
+    function changeWater(amount) {
+      water = Math.max(0, Math.min(8, water + amount));
+      document.getElementById('glass').textContent = water;
+      document.getElementById('waterBar').style.width = `${water / 8 * 100}%`;
+      document.querySelector('.progress').setAttribute('aria-valuenow', water);
+      document.getElementById('waterMsg').textContent = water >= 8
+        ? 'MashAllah Anashia! 8 glass complete! 🎉'
+        : water >= 4
+          ? 'Good Anashia! Aadha ho gaya, bas thora aur!'
+          : 'Pani piyo Anashia, skin glow karegi!';
+      updateScore();
+    }
+    document.getElementById('waterMinus').addEventListener('click', () => changeWater(-1));
+    document.getElementById('waterPlus').addEventListener('click', () => changeWater(1));
+
+    document.getElementById('todoForm').addEventListener('submit', event => {
+      event.preventDefault();
+      const input = document.getElementById('todoInput');
+      const value = input.value.trim();
+      if (!value) return;
+      const item = document.createElement('div');
+      item.className = 'todo-item';
+      const text = document.createElement('span');
+      text.textContent = value;
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = '❌';
+      remove.setAttribute('aria-label', `Delete task: ${value}`);
+      remove.addEventListener('click', () => item.remove());
+      item.append(text, remove);
+      document.getElementById('todoList').appendChild(item);
+      input.value = '';
+      input.focus();
+    });
+
+    updateScore();
+  </script>
+</body>
+</html>
